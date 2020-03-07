@@ -3,6 +3,22 @@
 
 Here we have Discord bot that automates chat gameplay of NonStory.
 
+## Starting bot
+First of all, activate Python virtual environment, so it won't affect global installation.
+```
+source .venv/bin/activate
+```
+
+To run bot use:
+```
+python main.py
+```
+
+Leaving virtual enironment, thus returning to global Python binaries, is possible by typing:
+```
+deactivate
+```
+
 ## License
 © 2020 [Rodion Borisov](https://github.com/vintprox) and [NonStory contributors](https://github.com/nonstory/nonstory/graphs/contributors)
 
