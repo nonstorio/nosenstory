@@ -1,26 +1,29 @@
 # NonStory Discord Bot (original in Python)
+
 > **NonStory** (a.k.a. "Nonsensical Story") is an improvised party game where players answer given short questions, and as result their answers are composed in a brief nonsensical story which is fun to read!
 
-Here we have Discord bot that automates chat gameplay of NonStory.
+Here we have Discord bot that automates chat gameplay for NonStory.
 
-## Starting bot
-First of all, activate Python virtual environment, so it won't affect global installation.
+## Prerequisites
+
+- [Python 3.5.3 or higher](https://www.python.org/downloads/),
+- [Pipenv](https://pipenv-fork.readthedocs.io/en/latest/install.html)
+
+## Getting Started
+
+Run project's virtual environment:
 ```
-source .venv/bin/activate
+$ pipenv shell
 ```
 
-To run bot use:
+Run bot using:
 ```
-python main.py
-```
-
-Leaving virtual enironment, thus returning to global Python binaries, is possible by typing:
-```
-deactivate
+$ python main.py
 ```
 
 ## License
-© 2020 [Rodion Borisov](https://github.com/vintprox) and [NonStory contributors](https://github.com/nonstory/nonstory/graphs/contributors)
+
+© 2020 [Rodion Borisov](https://github.com/vintprox), [Sun Maung Oo](https://github.com/SunMaungOo) and [NonStory contributors](https://github.com/nonstory/nonstory/graphs/contributors)
 
 Licensed under the [Apache License, Version 2.0](./LICENSE) (the "License");
 you may not use this file except in compliance with the License.
