@@ -1,6 +1,6 @@
 import random
 
-class core:
+class Core:
     def __init__(self,player:list):
         self.__player = player
    
@@ -15,3 +15,6 @@ class core:
             del self.__player[index]
             yield player_name 
         yield ""
+        
+    def __len__(self):
+        return len(self.__player)
