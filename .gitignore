@@ -1,4 +1,4 @@
 .env
-
-# Local virtual environment
+.vscode
+__pycache__
 env

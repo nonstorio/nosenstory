@@ -4,11 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
 
 [packages]
 discord-py = "*"
+peewee = "*"
+psycopg2-binary = "*"
 python-dotenv = "*"
-pytest = "*"
 
 [requires]
 python_version = "3.8"

@@ -6,19 +6,30 @@ Here we have Discord bot that automates chat gameplay for NonStory.
 
 ## Prerequisites
 
-- [Python 3.5.3 or higher](https://www.python.org/downloads/),
+- [Python 3.x and pip](https://docs.python-guide.org/starting/installation/)
+  * needed to run Pipenv (not related to Python binaries required for bot)
 - [Pipenv](https://pipenv-fork.readthedocs.io/en/latest/install.html)
+  * needed to reserve dependencies on per-project basis
+- [PostgreSQL](https://www.postgresql.org/)
+  * needed to store data and get reliable read/write access to it
 
 ## Getting Started
 
-Run project's virtual environment:
+Use virtual environment for project and install/update dependencies:
 ```
 $ pipenv shell
+$ pipenv install
 ```
 
-Run bot using:
+Don't forget to revise variables in `.env` file, that include `BOT_TOKEN`, `POLYGON_CHANNEL_ID`, `PSQL_*` (PostgreSQL connection), etc.:
 ```
-$ python main.py
+$ cp .env.example .env && nano .env
+```
+You'll need to have proper connection with database set up to make bot really work.
+
+Run bot within virtual environment with one simple command:
+```
+$ python .
 ```
 
 ## License
