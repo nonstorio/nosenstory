@@ -5,28 +5,40 @@ from discord import Embed, TextChannel
 from discord.ext.commands import Cog, CheckFailure, UserInputError, group, guild_only, check
 from ns import db
 from ns.const import COLOUR, EMOJI, MISC
-from ns.models import NsGuild, NsChannel, NsMgmt
+from ns.models import NsUser, NsGuild, NsChannel, NsMgmt
 from typing import Optional
 
 async def mgmt_guild(ctx):
-    if ctx.author.permissions_in(ctx.channel).administrator: return True
-    try:
-        NsMgmt.get(
-            NsMgmt.user == ctx.author.id,
-            NsMgmt.guild == ctx.guild.id
+    if ctx.author.permissions_in(ctx.channel).administrator:
+        return True
+    nsmgmt = (NsMgmt
+        .select()
+        .join_from(NsMgmt, NsUser)
+        .join_from(NsMgmt, NsGuild)
+        .where(
+            NsUser.ref_id == ctx.author.id,
+            NsGuild.ref_id == ctx.guild.id
         )
-    except:
+    ).count()
+    if nsmgmt == 0:
         raise CheckFailure(f'You do not have {MISC.COG_MGMT} permissions for guild.')
     return True
 
 async def mgmt_channel(ctx):
-    if ctx.author.permissions_in(ctx.channel).administrator: return True
-    try:
-        NsMgmt.get(
-            NsMgmt.user == ctx.author.id,
-            (NsMgmt.guild == ctx.guild.id) | (NsMgmt.channel == ctx.channel.id)
+    if ctx.author.permissions_in(ctx.channel).administrator:
+        return True
+    nsmgmt = (NsMgmt
+        .select()
+        .join_from(NsMgmt, NsUser)
+        .join_from(NsMgmt, NsGuild)
+        .join_from(NsMgmt,NsChannel)
+        .where(
+            NsUser.ref_id == ctx.author.id,
+            (NsGuild.ref_id == ctx.guild.id) |
+            (NsChannel.ref_id == ctx.channel.id)
         )
-    except:
+    ).count()
+    if nsmgmt == 0:
         raise CheckFailure(f'You do not have {MISC.COG_MGMT} permissions for channel or guild.')
     return True
 
@@ -73,21 +85,60 @@ class Mgmt(Cog, name = MISC.COG_MGMT):
             embed.add_field(name = 'Rounds held', value = f'`{nschannel.rounds_held}`')
         await ctx.reply(embed = embed)
 
-    @channel.command(aliases = ['add'])
+    @channel.command(aliases = ['add', 'register'])
     @check(mgmt_guild)
     async def assign(self, ctx, channel: Optional[TextChannel]):
         '''Assign bot to a channel, so game can be run there.'''
         channel = channel or ctx.message.channel
         nsguild = NsGuild.get(NsGuild.ref_id == ctx.guild.id)
-        _, created = NsChannel.get_or_create(
+        _, new = NsChannel.get_or_create(
             ref_id = channel.id,
             ref_name = channel.name,
             guild = nsguild
         )
-        if created:
+        if new:
             await ctx.reply(f'I am now assigned to <#{channel.id}>. Happy play!')
         else:
             await ctx.reply(f'Channel <#{channel.id}> is already in my database.')
+
+    @channel.command(aliases = ['hub', 'nsm', 'mgt', 'mngt', 'mngmt', 'management'])
+    @check(mgmt_guild)
+    async def mgmt(self, ctx, channel: Optional[TextChannel]):
+        '''Mark a channel as NS Management notifications hub of guild.'''
+        channel = channel or ctx.message.channel
+        nsguild = NsGuild.get(NsGuild.ref_id == ctx.guild.id)
+        nschannel, _ = NsChannel.get_or_create(
+            ref_id = channel.id,
+            ref_name = channel.name,
+            guild = nsguild
+        )
+        nsmgmt, _ = NsMgmt.get_or_create(
+            guild = nsguild
+        )
+        nsmgmt.channel = nschannel
+        nsmgmt.save()
+        await ctx.reply(f'Marked <#{channel.id}> as NS Management notifications hub of guild.')
+
+    @channel.command(aliases = ['kill', 'remove', 'delete', 'destroy'])
+    @check(mgmt_guild)
+    async def resign(self, ctx, channel: Optional[TextChannel]):
+        '''Remove all data related to channel.'''
+        channel = channel or ctx.message.channel
+        nschannel = NsChannel.get_or_none(NsChannel.ref_id == channel.id)
+        if not nschannel:
+            return await ctx.reply(f'Channel <#{channel.id}> was not registered in my database.')
+        prompt = await ctx.reply(f'Game data related to <#{channel.id}> will be deleted. React with `{EMOJI.YES}`, **if you are sure**.')
+        await prompt.add_reaction(EMOJI.YES)
+        try:
+            await ctx.bot.wait_for(
+                'reaction_add',
+                timeout = 10.0,
+                check = lambda reaction, user: reaction.emoji == EMOJI.YES and user.id == ctx.author.id and reaction.message.id == prompt.id
+            )
+            nschannel.delete_instance(recursive = True)
+            await ctx.edit_reply(prompt, content = f'Game data related to <#{channel.id}> was deleted.')
+        except: pass
+        await prompt.clear_reactions()
 
 def setup(bot):
     bot.add_cog(Mgmt())

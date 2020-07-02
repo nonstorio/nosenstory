@@ -89,7 +89,7 @@ class Bot(commands.Bot):
             nschannel.ref_name = channel.name
         else:
             nschannel.ref_id = channel.id
-            await channel.send(f'I am reassigned to <#{channel.id}>, since channel with similar name was found in my database.')
+            await channel.send(f'I am reassigned to <#{channel.id}>, because channel with similar name was found in my database.')
         nschannel.save()
     
     async def on_guild_channel_delete(self, channel):

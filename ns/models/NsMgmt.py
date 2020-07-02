@@ -2,7 +2,7 @@ from . import Model, NsUser, NsGuild, NsChannel
 from peewee import ForeignKeyField
 
 class NsMgmt(Model):
-    user = ForeignKeyField(NsUser)
+    user = ForeignKeyField(NsUser, null = True)
     guild = ForeignKeyField(NsGuild, null = True)
     channel = ForeignKeyField(NsChannel, null = True)
 
