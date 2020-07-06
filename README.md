@@ -38,7 +38,7 @@ $ pipenv install
 
 Run bot within virtual environment with one simple command:
 ```
-$ python .
+$ python -m ns
 ```
 
 ## License

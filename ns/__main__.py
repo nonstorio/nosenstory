@@ -6,7 +6,7 @@ from os import getenv
 from peewee import PostgresqlDatabase
 
 
-dotenv.load_dotenv(dotenv_path = '.env')
+dotenv.load_dotenv(dotenv_path = '../.env')
 logging.basicConfig(level = logging.INFO)
 
 db.initialize(
