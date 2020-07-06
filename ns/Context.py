@@ -1,4 +1,9 @@
+from core.models import (
+    NsChannel,
+    NsMgmt
+)
 from discord.ext import commands
+
 
 class Context(commands.Context):
     async def reply(self, content = None, **kwargs):
@@ -7,8 +12,7 @@ class Context(commands.Context):
     async def edit_reply(self, message, content = None, **kwargs):
         mention = f'<@{self.author.id}>'
         return await message.edit(content = f'{mention} ⦗ {content} ⦘' if content else mention, **kwargs)
-    async def sendToMgmt(self, content = None, ping = False, **kwargs):
-        from ns.models import NsChannel, NsMgmt
+    async def send_to_mgmt(self, content = None, ping = False, **kwargs):
         query = (NsMgmt
             .select()
             .join(NsChannel)

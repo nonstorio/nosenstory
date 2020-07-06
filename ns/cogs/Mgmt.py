@@ -1,14 +1,24 @@
-import asyncio
-import discord
-import peewee
+from core.const import COLOUR, EMOJI, MISC
+from core.models import (
+    NsChannel,
+    NsGuild,
+    NsMgmt,
+    NsUser
+)
 from discord import Embed, TextChannel
-from discord.ext.commands import Cog, CheckFailure, UserInputError, group, guild_only, check
-from ns import db
-from ns.const import COLOUR, EMOJI, MISC
-from ns.models import NsUser, NsGuild, NsChannel, NsMgmt
+from discord.ext.commands import (
+    CheckFailure,
+    Cog,
+    UserInputError,
+    check,
+    group,
+    guild_only
+)
+from ns import Context
 from typing import Optional
 
-async def mgmt_guild(ctx):
+
+async def mgmt_guild(ctx: Context):
     if ctx.author.permissions_in(ctx.channel).administrator:
         return True
     nsmgmt = (NsMgmt
@@ -21,17 +31,17 @@ async def mgmt_guild(ctx):
         )
     ).count()
     if nsmgmt == 0:
-        raise CheckFailure(f'You do not have {MISC.COG_MGMT} permissions for guild.')
+        raise CheckFailure(f'You do not have NS Management permissions for guild.')
     return True
 
-async def mgmt_channel(ctx):
+async def mgmt_channel(ctx: Context):
     if ctx.author.permissions_in(ctx.channel).administrator:
         return True
     nsmgmt = (NsMgmt
         .select()
         .join_from(NsMgmt, NsUser)
         .join_from(NsMgmt, NsGuild)
-        .join_from(NsMgmt,NsChannel)
+        .join_from(NsMgmt, NsChannel)
         .where(
             NsUser.ref_id == ctx.author.id,
             (NsGuild.ref_id == ctx.guild.id) |
@@ -39,10 +49,11 @@ async def mgmt_channel(ctx):
         )
     ).count()
     if nsmgmt == 0:
-        raise CheckFailure(f'You do not have {MISC.COG_MGMT} permissions for channel or guild.')
+        raise CheckFailure(f'You do not have NS Management permissions for channel or guild.')
     return True
 
-class Mgmt(Cog, name = MISC.COG_MGMT):
+
+class Mgmt(Cog, name = 'NS Management'):
     @group(invoke_without_command = True, aliases = ['server'])
     @guild_only()
     async def guild(self, ctx):
@@ -139,6 +150,7 @@ class Mgmt(Cog, name = MISC.COG_MGMT):
             await ctx.edit_reply(prompt, content = f'Game data related to <#{channel.id}> was deleted.')
         except: pass
         await prompt.clear_reactions()
+
 
 def setup(bot):
     bot.add_cog(Mgmt())
