@@ -2,7 +2,7 @@ from . import Model, NSPlatform
 from peewee import ForeignKeyField, BigIntegerField, CharField, FixedCharField
 
 class NSHome(Model):
-    platform = ForeignKeyField(NSPlatform, 'homes')
+    platform = ForeignKeyField(NSPlatform, backref = 'homes')
     id_int = BigIntegerField(null = True)
     id_str = CharField(null = True)
     lang = CharField(null = True)
