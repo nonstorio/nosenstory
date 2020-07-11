@@ -1,8 +1,8 @@
-# NonStory Discord Bot (original in Python)
+# NosenStory API
 
-> **NonStory** (a.k.a. "Nonsensical Story") is an improvised party game where players answer given short questions, and as result their answers are composed in a brief nonsensical story which is fun to read!
+> **NosenStory** (a.k.a. "Nonsensical Story") is an improvised party game where players answer given short questions, and as result their answers are composed in a brief nonsensical story which is fun to read!
 
-Here we have Discord bot that automates chat gameplay for NonStory.
+**NS API** is a client-agnostic interface for maintaining NosenStory's game process across multiple chat platforms.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ Here we have Discord bot that automates chat gameplay for NonStory.
 
 ## Getting Started
 
-Revise variables in `.env` file, that include `BOT_TOKEN`, `POLYGON_CHANNEL_ID`, `PSQL_*` (PostgreSQL connection), etc.:
+Revise variables in `.env` file (`PSQL_*` for PostgreSQL connection):
 ```
 $ cp .env.example .env && nano .env
 ```
@@ -26,7 +26,7 @@ Project contains meta files specifc to PyCharm IDE (author thinks that it's more
 
 When prompted, set Pipenv as project interpreter (SDK). It also must install dependencies listed in `Pipfile`.
 
-Run configuration "ns" to activate bot.
+Run configuration "api" to activate NS API.
 
 ### Shell
 
@@ -36,9 +36,9 @@ $ pipenv shell
 $ pipenv install
 ```
 
-Run bot within virtual environment with one simple command:
+Run NS API within virtual environment with one simple command:
 ```
-$ python -m ns
+$ python -m api
 ```
 
 ## License
