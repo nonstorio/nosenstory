@@ -1,12 +1,16 @@
 from .Model import db, Model
-from .NsUser import NsUser
-from .NsGuild import NsGuild
-from .NsChannel import NsChannel
-from .NsMgmt import NsMgmt
+from .NSLobby import NSLobby
+from .NSPlatform import NSPlatform
+from .NSHome import NSHome
+from .NSUser import NSUser
+from .NSRoom import NSRoom
+from .NSMgmt import NSMgmt
 
 models = [
-    NsUser,
-    NsGuild,
-    NsChannel,
-    NsMgmt
+    NSLobby,
+    NSPlatform,
+    NSHome,
+    NSUser,
+    NSRoom,
+    NSMgmt
 ]

@@ -1,7 +1,6 @@
-from peewee import DatabaseProxy
+import peewee
 
-
-class NsDatabase(DatabaseProxy):
+class DatabaseProxy(peewee.DatabaseProxy):
     def initialize(self, obj, models = [], drop = False, create = True):
         super().initialize(obj)
         if not obj: return

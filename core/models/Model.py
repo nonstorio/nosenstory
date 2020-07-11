@@ -1,7 +1,7 @@
 import peewee as pw
-from core.NsDatabase import NsDatabase
+from core.DatabaseProxy import DatabaseProxy
 
-db = NsDatabase()
+db = DatabaseProxy()
 
 class Model(pw.Model):
     class Meta:
