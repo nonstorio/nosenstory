@@ -4,11 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
+grpcio = "==1.31.0"
 peewee = "==3.13.3"
 psycopg2-binary = "==2.8.5"
 python-dotenv = "==0.14.0"
 
 [dev-packages]
+grpcio-tools = "*"
 pytest = "*"
 
 [requires]

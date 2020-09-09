@@ -15,18 +15,23 @@
 
 ## Getting Started
 
-Revise variables in `.env` file (`PSQL_*` for PostgreSQL connection):
+Make sure you've fetched submodules as well.
+```
+$ git submodule init && git submodule update
+```
+
+Create `.env` file from `.env.example` and revise variables (`PSQL_*` for PostgreSQL connection):
 ```
 $ cp .env.example .env && nano .env
 ```
 
 ### PyCharm
 
-Project contains meta files specifc to PyCharm IDE (author thinks that it's more than feasible for working with Python). These include some sort of inspection guideline to prevent code smell.
+Project contains meta files specifc to PyCharm IDE (in the author's humble opinion, it's more than feasible for working with Python). These include some sort of inspection guideline to prevent code smell.
 
-When prompted, set Pipenv as project interpreter (SDK). It also must install dependencies listed in `Pipfile`.
-
-Run configuration "api" to activate NS API.
+1. Set Pipenv as project interpreter (SDK). It also must install dependencies listed in `Pipfile`.
+2. Fetch latest gRPC stubs by running configuration "**setup_stubs**".
+3. Run configuration "**api**" to activate NS API.
 
 ### Shell
 
@@ -36,7 +41,12 @@ $ pipenv shell
 $ pipenv install
 ```
 
-Run NS API within virtual environment with one simple command:
+After that, generate fresh gRPC stubs:
+```
+$ python setup.py stubs
+```
+
+Run NS API within virtual environment using one simple command:
 ```
 $ python -m api
 ```

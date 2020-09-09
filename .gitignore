@@ -1,4 +1,4 @@
 .env
-.vscode
 __pycache__
-env
+api/stubs/*
+!api/stubs/.gitkeep
